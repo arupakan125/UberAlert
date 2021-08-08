@@ -1,0 +1,10 @@
+{
+    "name": "UberAlert",
+    "dockerFile": "../Dockerfile",
+    "appPort": 3000,
+    "extensions": [
+      "ms-python.python",
+      "oderwat.indent-rainbow",
+      "batisteo.vscode-django",
+    ],
+  }
