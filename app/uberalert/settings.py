@@ -131,5 +131,17 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 if DEBUG:
     # SECURITY WARNING: keep the secret key used in production secret!
     SECRET_KEY = 'django-insecure-v4!cw1c5z61b7x3!k2wa#&cjh7-f5#h=)n00%w(@ho!b0)edkg'
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 else:
     SECRET_KEY = os.environ.get('SECRET_KEY', None)
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': '/db/db.sqlite3',
+        }
+    }
