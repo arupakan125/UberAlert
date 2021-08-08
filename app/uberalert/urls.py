@@ -16,6 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from slack.urls import slack_events_handler
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path("slack/events", slack_events_handler)
 ]
