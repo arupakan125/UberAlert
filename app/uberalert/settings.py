@@ -12,6 +12,10 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 
+import distutils.util
+import os
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -19,11 +23,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-v4!cw1c5z61b7x3!k2wa#&cjh7-f5#h=)n00%w(@ho!b0)edkg'
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = distutils.util.strtobool(os.environ.get('DEBUG', 'True'))
 
 ALLOWED_HOSTS = ["*"]
 
@@ -124,3 +127,9 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+if DEBUG:
+    # SECURITY WARNING: keep the secret key used in production secret!
+    SECRET_KEY = 'django-insecure-v4!cw1c5z61b7x3!k2wa#&cjh7-f5#h=)n00%w(@ho!b0)edkg'
+else:
+    SECRET_KEY = os.environ.get('SECRET_KEY', None)
