@@ -111,3 +111,35 @@ def handle_submission(ack, body, client, view, logger):
         client.chat_postMessage(channel=body["view"]["private_metadata"], text=msg)
     except e:
         logger.exception(f"Failed to post a message {e}")
+
+@app.command("/uber")
+def command_uber(ack, say, client, respond, command, body):
+    # Acknowledge command request
+    ack()
+    user = body["user_id"]
+    args = command["text"].split()
+
+    if args[0] == "history":
+        if not Order.objects.filter(user_id=user).exists():
+            say("注文履歴はありません")
+            return
+
+        response = client.chat_postMessage(
+            channel=body["channel_id"],
+            text=f"<@{user}>さんの注文履歴:tsuduki_ha_thread_de:"
+        )
+        for object in Order.objects.filter(user_id=user):
+            client.chat_postMessage(
+                channel=body["channel_id"],
+                thread_ts=response["ts"],
+                text=f"ID: {object.id}, Price: {object.price}, Date: {object.ordered_at}"
+            )
+
+    if args[0] == "delete":
+        if not Order.objects.filter(id=args[1], user_id=user).exists():
+            respond(f"不正なIDです。({args[1]})")
+            return
+
+        object = Order.objects.get(id=args[1], user_id=user)
+        respond(f"指定された注文履歴を削除するね。\nID: {object.id}, Price: {object.price}, Date: {object.ordered_at}")
+        object.delete()
